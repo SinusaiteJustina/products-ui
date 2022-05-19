@@ -9,6 +9,7 @@
    <th>Name</th>
    <th>Price</th>
    <th>Quantity</th>
+   <th>Description</th>
    <th>Actions</th>
   </tr>
    <tr th:each="item : ${productItems}">
@@ -16,8 +17,13 @@
     <td th:text="${item.name}">
     <td th:text="${item.price}">
     <td th:text="${item.quantity}">
-    <td><a th:href="@{'/products/' + ${item.id}}">EDIT</a></td>
+    <td th:text="${item.description}">
+    <td>
+    <a th:href="@{'/products/' + ${item.id}}">EDIT</a>
+    <a th:href="@{'/products/delete?id=' + ${item.id}}" onclick="return confirm('Are you sure?')">DELETE</a>
+    </td>
    </tr>
  </table>
+<a th:href="@{/products/add}" ><button>[ + ]Add New</button></a>
 </body>
 </html>
