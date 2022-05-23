@@ -4,8 +4,6 @@ import lt.bit.products.ui.model.Product;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-
 @Component
 public class ProductValidator {
 
@@ -40,11 +38,29 @@ public class ProductValidator {
             int index = description.indexOf(i + "");
             while (index != -1) {
                 integers[index] = i;
-                index = description.indexOf(i + "",index + 1);
+                index = description.indexOf(i + "", index + 1);
             }
         }
+        System.out.println(toStringExceptNulls(new Character[]{'D', 'e', 's', 'c', 'r', 'i', 'p', 't', 'i', 'o', 'n'}));
         throw new ValidationException(ErrorCode.VALUE_CONTAINS_DIGITS, new Object[]{"Description",
-                Arrays.toString(integers)});
+                toStringExceptNulls(integers)});
+    }
+
+    private String toStringExceptNulls(Object[] integers) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < integers.length; ++i) {
+            if (integers[i] == null) {
+                continue;
+            }
+            sb.append(integers[i]);
+            if (i == integers.length - 1) {
+                break;
+            }
+            sb.append(", ");
+
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
 }
