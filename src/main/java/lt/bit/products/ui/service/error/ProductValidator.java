@@ -4,6 +4,8 @@ import lt.bit.products.ui.model.Product;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+
 @Component
 public class ProductValidator {
 
@@ -34,16 +36,18 @@ public class ProductValidator {
 
     private void validateDescription(String description) throws ValidationException {
         Integer[] integers = new Integer[description.length()];
+        String emptyIntegers = Arrays.toString(integers);
         for (int i = 0; i < 10; ++i) {
-            int index = description.indexOf(i + "");
+           int index = description.indexOf(i + "");
             while (index != -1) {
                 integers[index] = i;
                 index = description.indexOf(i + "", index + 1);
             }
         }
-        System.out.println(toStringExceptNulls(new Character[]{'D', 'e', 's', 'c', 'r', 'i', 'p', 't', 'i', 'o', 'n'}));
-        throw new ValidationException(ErrorCode.VALUE_CONTAINS_DIGITS, new Object[]{"Description",
-                toStringExceptNulls(integers)});
+         if (!emptyIntegers.equals(Arrays.toString(integers))) {
+             throw new ValidationException(ErrorCode.VALUE_CONTAINS_DIGITS, new Object[]{"Description",
+                     toStringExceptNulls(integers)});
+         }
     }
 
     private String toStringExceptNulls(Object[] integers) {
